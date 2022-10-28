@@ -1,21 +1,22 @@
 <template>
+<!--  <div>-->
+<!--    <div id="searchBar">-->
+<!--      <input type="text" placeholder="Search cubes..." v-model="searchInput" @input="search" @focusout="loseFocus">-->
+<!--      <i @click="clearInput"><oh-vue-icon name="bi-x-lg" animation="wrench" hover></oh-vue-icon></i>-->
+<!--    </div>-->
+<!--    <ol id="cubesValidation" @click="changeShow">-->
+<!--      <li v-for="cube in cubesList" :key="cube.id" @click="clicked(cube.id)" :class="clickedId === cube.id ? cube.id + ' selectedItem' : cube.id + ''">{{ cube.name }}</li>-->
+<!--    </ol>-->
+<!--  </div>-->
   <div>
-    <div id="searchBar">
-      <input type="text" placeholder="Search cubes..." v-model="searchInput" @input="search" @focusout="loseFocus">
-      <i @click="clearInput"><oh-vue-icon name="bi-x-lg" animation="wrench" hover></oh-vue-icon></i>
-    </div>
-    <ol id="cubesValidation" @click="changeShow">
-      <li v-for="cube in cubesList" :key="cube.id" @click="clicked(cube.id)" :class="clickedId === cube.id ? cube.id + ' selectedItem' : cube.id + ''">{{ cube.name }}</li>
-    </ol>
+    <v-select class="style-chooser" v-model="selectedInput" label="name" :reduce="cube => cube.id" :options="cubesList"></v-select>
   </div>
 </template>
 
 <script setup lang="ts">
-import {defineProps, ref, watch, defineEmits} from 'vue'
-import {OhVueIcon, addIcons} from "oh-vue-icons"
-import { BiXLg } from "oh-vue-icons/icons"
-
-addIcons(BiXLg)
+import {defineProps, ref, watch} from 'vue'
+import vSelect from "vue-select";
+import "vue-select/dist/vue-select.css";
 
 const props = defineProps({
   cubesList: {type: Array, required: true}
@@ -25,111 +26,35 @@ const emit = defineEmits({
   selected: String
 })
 
-let show = true
-
-function changeShow() {
-  const li = document.querySelectorAll("li")
-  if (show) {
-    li.forEach(element => element.style.display = "block")
-  } else {
-    li.forEach(element => {
-      if (!element.classList.contains("selectedItem")) {
-        element.style.display = "none"
-      }
-    })
-  }
-  show = !show
-}
-let clickedId = ref("none")
-function clicked(event: string) {
-  clickedId.value = event
-  emit("selected", clickedId.value)
-}
-
-let searchInput = ref('')
-function search() {
-  let filter = searchInput.value.toUpperCase()
-  let blocks: any = document.getElementsByTagName("li") as HTMLCollectionOf<HTMLElement>
-  for (let i = 0; i < blocks.length; i++) {
-    let content = blocks[i].textContent.toUpperCase()
-    if (content.indexOf(filter) > -1) {
-      blocks[i].style.display = "block"
-    } else {
-      blocks[i].style.display = "none"
-    }
-  }
-}
-
-function loseFocus() {
-  if (searchInput.value === '') {
-    const li = document.querySelectorAll("li")
-    li.forEach(element => {
-      if (!element.classList.contains("selectedItem")) {
-        element.style.display = "none"
-      } else {
-        element.style.display = "block"
-      }
-    })
-  }
-}
-
-function clearInput() {
-  searchInput.value = ''
-  loseFocus()
-}
-
-watch(() => clickedId.value, (newVal, preVal) => {
-  // console.log(newVal + " " + preVal)
+let selectedInput: any = ref()
+watch(() => selectedInput.value, (newV, preV) => {
+  emit("selected", newV)
 })
 
 </script>
 
 <style scoped>
-
-#searchBar {
-  display: flex;
-  align-items: center;
-  padding: 0 1em 0 1em;
+div {
+  width: 95%;
+  margin-left: 2.5%;
+  padding-bottom: .4em;
 }
 
-input {
-  padding: 5px;
+>>> {
+  --vs-controls-color: #ffffff;
+  --vs-border-color: #ffffff;
+
+  --vs-dropdown-bg: #3d3d3d;
+  --vs-dropdown-color: #ffffff;
+  --vs-dropdown-option-color: #ffffff;
+
+  --vs-selected-bg: #1d1d1d;
+  --vs-selected-color: #ffffff;
+
+  --vs-search-input-color: #ffffff;
+
+  --vs-dropdown-option--active-bg: #1d1d1d;
+  --vs-dropdown-option--active-color: #eeeeee;
 }
 
-i {
-  padding-left: .5em;
-}
-
-i:hover {
-  cursor: pointer;
-}
-
-ol {
-  list-style-type: none;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  max-height: 218px;
-  overflow-y: auto;
-  width: 14em;
-}
-
-ol li {
-  display: none;
-  word-wrap: break-word;
-  padding: 5px;
-}
-
-ol li:first-child {
-  display: block;
-}
-
-li:hover {
-  cursor: pointer;
-  background-color: #1d1d1d;
-}
-
-.selectedItem {
-  order: -1;
-}
 </style>

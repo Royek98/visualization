@@ -21,7 +21,7 @@ sceneStore.cubeList = cubes
 onMounted(() => {
   const container: any = document.getElementById('three-container')
 
-  sceneStore.scene.background = new Color(0x969696)
+  sceneStore.scene.background = new Color(0x595959)
 
   const camera = new PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 1000000)
   camera.position.set(0, 0, 155929)
@@ -67,7 +67,3 @@ onMounted(() => {
 
 })
 </script>
-
-<style scoped>
-
-</style>

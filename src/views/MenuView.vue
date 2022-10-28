@@ -53,7 +53,7 @@ const toggleStore = useToggle()
 
 .v-enter-from,
 .v-leave-to {
-  transform: translateX(-10vw);
+  transform: translateX(-26em);
   /*transition: all 0.3s ease-out;*/
 }
 

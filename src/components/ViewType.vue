@@ -19,8 +19,7 @@ import {watch, ref} from 'vue'
 import {useScene} from "@/stores/useScene"
 import {OhVueIcon, addIcons} from "oh-vue-icons"
 import {IoCube, HiCube} from "oh-vue-icons/icons"
-import {MeshBasicMaterial, BoxGeometry, Mesh, EdgesGeometry, LineSegments} from 'three'
-import type {Cube} from '@/models/Cube'
+import {MeshBasicMaterial} from 'three'
 
 addIcons(IoCube, HiCube)
 
@@ -44,10 +43,11 @@ let savedScene: Saved[] = []
 watch(
     picked,
     (newPicked, prevPicked) => {
+      sceneStore.viewType = newPicked
       saveSceneState()
       sceneStore.scene.clear()
       sceneStore.drawAxes()
-      viewType(newPicked)
+      viewType()
       savedScene = []
     }
 )
@@ -61,35 +61,10 @@ function saveSceneState() {
   })
 }
 
-function viewType(pickedType: string) {
-  switch (pickedType) {
-    case 'wireframe': {
-      savedScene.forEach(cube => {
-        const found = findCube(cube.name)
-        const colorMaterial = setColor(cube.color)
-        drawWireframeCube(found, colorMaterial)
-      })
-      break
-    }
-    case 'solid': {
-      savedScene.forEach(cube => {
-        const found = findCube(cube.name)
-        const colorMaterial = setColor(cube.color)
-        drawSolidCube(found, colorMaterial)
-      })
-      break
-    }
-    default: {
-      console.error("View Type \" " + pickedType + " \" not found!")
-      break
-    }
-  }
-}
-
-function findCube(name: string): Cube {
-  // towrzę kopie, aby pozbyć się proxy
-  const found = sceneStore.cubeList.find(cube => cube.id === name)
-  return Object.assign({}, found);
+function viewType() {
+  savedScene.forEach(saved => {
+    sceneStore.drawScene(saved.name, setColor(saved.color))
+  })
 }
 
 function setColor(color: Color): MeshBasicMaterial {
@@ -98,33 +73,6 @@ function setColor(color: Color): MeshBasicMaterial {
   colorMaterial.color.g = color.g
   colorMaterial.color.b = color.b
   return colorMaterial
-}
-
-function drawSolidCube(found: Cube, colorMaterial: MeshBasicMaterial) {
-  const targetCopyCenter = Object.assign({}, found.center)
-
-  const boxGeometry = new BoxGeometry(found.width, found.depth, found.height);
-  const solid = new Mesh(boxGeometry, colorMaterial);
-
-  solid.position.set(targetCopyCenter.x, targetCopyCenter.y, targetCopyCenter.z);
-  solid.rotation.set(0, 0, -found.rotation);
-  solid.material.transparent = true;
-  solid.material.opacity = 0.3;
-  solid.name = found.id
-  sceneStore.scene.add(solid);
-}
-
-function drawWireframeCube(found: any, colorMaterial: MeshBasicMaterial) {
-  const targetCopyCenter = Object.assign({}, found.center)
-
-  const boxGeometry = new BoxGeometry(found.width, found.depth, found.height)
-  const edges = new EdgesGeometry(boxGeometry)
-  const wireframe = new LineSegments(edges, colorMaterial)
-
-  wireframe.position.set(targetCopyCenter.x, targetCopyCenter.y, targetCopyCenter.z)
-  wireframe.rotation.set(0, 0, -found.rotation)
-  wireframe.name = found.id
-  sceneStore.scene.add(wireframe)
 }
 
 </script>
