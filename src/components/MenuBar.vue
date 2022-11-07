@@ -6,9 +6,9 @@
 </template>
 
 <script setup lang="ts">
-import {useToggle} from '@/stores/useToggle'
+import {useMenu} from '@/stores/useMenu'
 
-const toggleStore = useToggle()
+const toggleStore = useMenu()
 
 </script>
 

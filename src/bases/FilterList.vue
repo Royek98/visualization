@@ -1,13 +1,4 @@
 <template>
-<!--  <div>-->
-<!--    <div id="searchBar">-->
-<!--      <input type="text" placeholder="Search cubes..." v-model="searchInput" @input="search" @focusout="loseFocus">-->
-<!--      <i @click="clearInput"><oh-vue-icon name="bi-x-lg" animation="wrench" hover></oh-vue-icon></i>-->
-<!--    </div>-->
-<!--    <ol id="cubesValidation" @click="changeShow">-->
-<!--      <li v-for="cube in cubesList" :key="cube.id" @click="clicked(cube.id)" :class="clickedId === cube.id ? cube.id + ' selectedItem' : cube.id + ''">{{ cube.name }}</li>-->
-<!--    </ol>-->
-<!--  </div>-->
   <div>
     <v-select class="style-chooser" v-model="selectedInput" label="name" :reduce="cube => cube.id" :options="cubesList"></v-select>
   </div>
@@ -37,7 +28,7 @@ watch(() => selectedInput.value, (newV, preV) => {
 div {
   width: 95%;
   margin-left: 2.5%;
-  padding-bottom: .4em;
+  padding-bottom: .2em;
 }
 
 >>> {

@@ -4,8 +4,15 @@ import type {Cube} from '@/models/Cube'
 
 export const useScene = defineStore('sceneStore', {
     state: () => {
-        return {scene: new Scene(), cubeList: [] as Cube[], viewType: 'wireframe'}
+        return {scene: new Scene(), cubeList: [] as Cube[], viewType: 'wireframe', focusedCube: null}
     },
+
+    getters: {
+      getCurrentScene(): string[] {
+          return this.scene.children.map(obj => obj.name).filter(obj => obj != '')
+      }
+    },
+
     actions: {
         drawAxes() {
             const axesHelper = new AxesHelper(10000000)
@@ -46,14 +53,13 @@ export const useScene = defineStore('sceneStore', {
             solid.position.set(targetCopyCenter.x, targetCopyCenter.y, targetCopyCenter.z);
             solid.rotation.set(0, 0, -found.rotation);
             solid.material.transparent = true;
-            solid.material.opacity = 0.3;
+            solid.material.opacity = 0.7;
             solid.name = found.id
             this.scene.add(solid);
         },
 
-        drawWireframeCube(found: any, colorMaterial: MeshBasicMaterial) {
+        drawWireframeCube(found: Cube, colorMaterial: MeshBasicMaterial) {
             const targetCopyCenter = Object.assign({}, found.center)
-
             const boxGeometry = new BoxGeometry(found.width, found.depth, found.height)
             const edges = new EdgesGeometry(boxGeometry)
             const wireframe = new LineSegments(edges, colorMaterial)
@@ -62,6 +68,48 @@ export const useScene = defineStore('sceneStore', {
             wireframe.rotation.set(0, 0, -found.rotation)
             wireframe.name = found.id
             this.scene.add(wireframe)
+        },
+
+        drawCollisions(id: string, collisionType: string) {
+            switch (collisionType) {
+                case "Conflict": {
+                    const color = this.setColor(new Color(1,0,0))
+                    this.drawScene(id, color)
+                    break
+                }
+                case "IsWithin": {
+                    const color = this.setColor(new Color(0,0,1))
+                    this.drawScene(id, color)
+                    break
+                }
+                case "Contain": {
+                    const color = this.setColor(new Color(1,1,0))
+                    this.drawScene(id, color)
+                    break
+                }
+                case "Equal": {
+                    const color = this.setColor(new Color(0.6,0,1))
+                    this.drawScene(id, color)
+                    break
+                }
+                case "Okay": {
+                    const color = this.setColor(new Color(0,0.8,0))
+                    this.drawScene(id, color)
+                    break
+                }
+            }
+        },
+
+        setColor(color: Color): MeshBasicMaterial {
+            let colorMaterial = new MeshBasicMaterial()
+            colorMaterial.color.r = color.r
+            colorMaterial.color.g = color.g
+            colorMaterial.color.b = color.b
+            return colorMaterial
+        },
+
+        sceneRemove(id: string) {
+            this.scene.remove.apply(this.scene, this.scene.children.filter(child => child.name === id))
         }
     },
 })

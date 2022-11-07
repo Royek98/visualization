@@ -8,8 +8,15 @@
         <content-element name="Set Focus">
           <set-focus></set-focus>
         </content-element>
-<!--        <content-element name="Current Scene">-->
-<!--        </content-element>-->
+        <content-element name="Check Collisions">
+          <check-collision></check-collision>
+        </content-element>
+        <content-element name="Scene">
+          <scene-component></scene-component>
+        </content-element>
+        <content-element name="Details">
+          <details-component></details-component>
+        </content-element>
       </div>
       <menu-bar v-show="toggleStore.toggle"></menu-bar>
     </div>
@@ -24,10 +31,13 @@ import MenuBar from '../components/MenuBar.vue'
 import ContentElement from '../bases/ContentElement.vue'
 import ViewType from '../components/ViewType.vue'
 import SetFocus from '../components/SetFocus.vue'
+import CheckCollision from '../components/CheckCollision.vue'
+import SceneComponent from '../components/Scene.vue'
+import DetailsComponent from '../components/Details.vue'
 
-import {useToggle} from '@/stores/useToggle'
+import {useMenu} from '@/stores/useMenu'
 
-const toggleStore = useToggle()
+const toggleStore = useMenu()
 
 </script>
 
@@ -53,7 +63,7 @@ const toggleStore = useToggle()
 
 .v-enter-from,
 .v-leave-to {
-  transform: translateX(-26em);
+  transform: translateX(-21em);
   /*transition: all 0.3s ease-out;*/
 }
 

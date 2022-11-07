@@ -3,7 +3,7 @@ interface Center {
     y: number,
     z: number
 }
-interface Validated {
+export interface Validated {
     id: string,
     collisionType: string
 }

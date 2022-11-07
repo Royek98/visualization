@@ -39,7 +39,7 @@ function change() {
   background-color: #3d3d3d;
   margin-bottom: .5em;
   border-radius: 5px;
-  min-width: 25em;
+  min-width: 20em;
 }
 
 .iconLabel {
