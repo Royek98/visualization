@@ -55,7 +55,3 @@ watch(() => menuStore.getCheckedName, (newV, preV) => {
 })
 
 </script>
-
-<style scoped>
-
-</style>

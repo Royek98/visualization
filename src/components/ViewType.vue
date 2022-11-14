@@ -20,6 +20,7 @@ import {useScene} from "@/stores/useScene"
 import {OhVueIcon, addIcons} from "oh-vue-icons"
 import {IoCube, HiCube} from "oh-vue-icons/icons"
 import {MeshBasicMaterial} from 'three'
+import type {ColorCustom} from '@/models/Color'
 
 addIcons(IoCube, HiCube)
 
@@ -27,15 +28,15 @@ let picked = ref('wireframe')
 
 const sceneStore = useScene()
 
-interface Color {
-  r: number
-  g: number
-  b: number
-}
+// interface Color {
+//   r: number
+//   g: number
+//   b: number
+// }
 
 interface Saved {
   name: string
-  color: Color
+  color: ColorCustom
 }
 
 let savedScene: Saved[] = []
@@ -56,6 +57,7 @@ function saveSceneState() {
   sceneStore.scene.children.forEach(child => {
     savedScene.push({
       name: child.name,
+      // @ts-ignore
       color: {r: child.material.color.r, g: child.material.color.g, b: child.material.color.b}
     })
   })
@@ -67,7 +69,7 @@ function viewType() {
   })
 }
 
-function setColor(color: Color): MeshBasicMaterial {
+function setColor(color: ColorCustom): MeshBasicMaterial {
   let colorMaterial = new MeshBasicMaterial()
   colorMaterial.color.r = color.r
   colorMaterial.color.g = color.g

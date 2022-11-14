@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia'
-import {Scene, AxesHelper, MeshBasicMaterial, BoxGeometry, Mesh, EdgesGeometry, LineSegments, Color} from "three";
+import {Scene, AxesHelper, MeshBasicMaterial, BoxGeometry, Mesh, EdgesGeometry, LineSegments, Color} from "three"
 import type {Cube} from '@/models/Cube'
 
 export const useScene = defineStore('sceneStore', {
@@ -41,21 +41,21 @@ export const useScene = defineStore('sceneStore', {
         findCube(id: string): Cube {
             // towrzę kopie, aby pozbyć się proxy
             const found = this.cubeList.find(cube => cube.id === id) as Cube
-            return Object.assign({}, found);
+            return Object.assign({}, found)
         },
 
         drawSolidCube(found: Cube, colorMaterial: MeshBasicMaterial) {
             const targetCopyCenter = Object.assign({}, found.center)
 
-            const boxGeometry = new BoxGeometry(found.width, found.depth, found.height);
-            const solid = new Mesh(boxGeometry, colorMaterial);
+            const boxGeometry = new BoxGeometry(found.width, found.depth, found.height)
+            const solid = new Mesh(boxGeometry, colorMaterial)
 
-            solid.position.set(targetCopyCenter.x, targetCopyCenter.y, targetCopyCenter.z);
-            solid.rotation.set(0, 0, -found.rotation);
-            solid.material.transparent = true;
-            solid.material.opacity = 0.7;
+            solid.position.set(targetCopyCenter.x, targetCopyCenter.y, targetCopyCenter.z)
+            solid.rotation.set(0, 0, -found.rotation)
+            solid.material.transparent = true
+            solid.material.opacity = 0.7
             solid.name = found.id
-            this.scene.add(solid);
+            this.scene.add(solid)
         },
 
         drawWireframeCube(found: Cube, colorMaterial: MeshBasicMaterial) {
@@ -110,6 +110,23 @@ export const useScene = defineStore('sceneStore', {
 
         sceneRemove(id: string) {
             this.scene.remove.apply(this.scene, this.scene.children.filter(child => child.name === id))
+        },
+
+        selectedCubeColor(id: string): Color {
+            // @ts-ignore
+            return this.scene.children.find(child => child.name === id)?.material.color
+        },
+
+        changeCubeColor(id: string, color: Color) {
+            const found = this.scene.children.find(child => child.name === id)
+            if (found != undefined) {
+                // @ts-ignore
+                found.material.color.r = color.r
+                // @ts-ignore
+                found.material.color.g = color.g
+                // @ts-ignore
+                found.material.color.b = color.b
+            }
         }
     },
 })

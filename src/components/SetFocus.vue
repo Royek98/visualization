@@ -1,5 +1,5 @@
 <template>
-  <filter-list :cubes-list="obj.cubesList" @selected="emitted"></filter-list>
+  <filter-list :cubes-list="obj.cubesList" @selected="emitted" :checker="checker"></filter-list>
 </template>
 
 <script setup lang="ts">
@@ -41,8 +41,6 @@ watch(() => selected.value, (newVal, preVal) => {
   }
 })
 
+const checker = false
+
 </script>
-
-<style scoped>
-
-</style>

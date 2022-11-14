@@ -8,9 +8,13 @@
 import {defineProps, ref, watch} from 'vue'
 import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
+import {useScene} from "@/stores/useScene"
+
+const sceneStore = useScene()
 
 const props = defineProps({
-  cubesList: {type: Array, required: true}
+  cubesList: {type: Array, required: true},
+  checker: {type: Boolean, required: false}
 })
 
 const emit = defineEmits({
@@ -20,6 +24,16 @@ const emit = defineEmits({
 let selectedInput: any = ref()
 watch(() => selectedInput.value, (newV, preV) => {
   emit("selected", newV)
+})
+
+watch(() => sceneStore.getCurrentScene, (newV, preV) => {
+  if (!props.checker) {
+    return
+  }
+
+  if (newV.find(obj => obj == selectedInput.value) == undefined) {
+    selectedInput.value = null
+  }
 })
 
 </script>
