@@ -3,10 +3,9 @@
 </template>
 
 <script setup lang="ts">
-// import type {Cube} from '@/models/Cube'
 import FilterList from '@/bases/FilterList.vue'
 import {useScene} from "@/stores/useScene"
-import {onMounted, reactive, ref, watch} from 'vue'
+import {reactive, ref, watch} from 'vue'
 import {Color} from 'three'
 
 const sceneStore = useScene()
@@ -18,8 +17,9 @@ interface CubeSimplified {
 
 let obj = reactive({cubesList: [] as CubeSimplified[]})
 
-onMounted(()=> {
-  sceneStore.cubeList.forEach(cube => obj.cubesList.push({id: cube.id, name: cube.name}))
+watch(() => sceneStore.cubeList, (neV, preV) => {
+  obj.cubesList = []
+  neV.forEach(cube => obj.cubesList.push({id: cube.id, name: cube.name}))
 })
 
 let selected = ref()

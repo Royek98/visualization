@@ -62,8 +62,6 @@ onMounted(() => {
 
     raycaster.setFromCamera( pointer, camera );
     const intersects = raycaster.intersectObjects( sceneStore.scene.children )
-
-    console.log(intersects)
   }
 
 

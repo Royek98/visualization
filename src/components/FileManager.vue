@@ -27,6 +27,7 @@ function handleFileUpload(event: any) {
   reader.readAsText(event.target.files[0])
   reader.onload = function() {
     let result: string = reader.result?.toString()!
+    console.log(result)
     sceneStore.cubeList = JSON.parse(result)
     sceneStore.cubeList.forEach(cube => {
       if (sceneStore.viewType == 'wireframe') {
