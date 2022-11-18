@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import type {Cube} from '@/models/Cube'
+// import type {Cube} from '@/models/Cube'
 import FilterList from '@/bases/FilterList.vue'
 import {useScene} from "@/stores/useScene"
 import {onMounted, reactive, ref, watch} from 'vue'

@@ -2,6 +2,9 @@
   <Transition>
     <div class="menu" v-show="toggleStore.toggle">
       <div id="content">
+        <content-element name="File Manager">
+          <file-manager></file-manager>
+        </content-element>
         <content-element name="View Type">
           <view-type></view-type>
         </content-element>
@@ -34,6 +37,7 @@ import SetFocus from '../components/SetFocus.vue'
 import CheckCollision from '../components/CheckCollision.vue'
 import SceneComponent from '../components/Scene.vue'
 import DetailsComponent from '../components/Details.vue'
+import FileManager from  '../components/FileManager.vue'
 
 import {useMenu} from '@/stores/useMenu'
 

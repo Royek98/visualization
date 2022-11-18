@@ -7,7 +7,7 @@ import {onMounted} from 'vue'
 import {
   PerspectiveCamera, WebGLRenderer,
   BoxGeometry, MeshBasicMaterial, Color,
-  Vector3, EdgesGeometry, LineSegments
+  Vector3, EdgesGeometry, LineSegments, Raycaster, Vector2
 } from 'three'
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js'
 import cubesJSON from "./validated.json"
@@ -15,8 +15,9 @@ import {useScene} from "@/stores/useScene"
 import type {Cube} from '@/models/Cube'
 
 const sceneStore = useScene();
-const cubes: Cube[] = cubesJSON as Cube[]
-sceneStore.cubeList = cubes
+// const cubes: Cube[] = cubesJSON as Cube[]
+//
+// sceneStore.cubeList = cubes
 
 onMounted(() => {
   const container: any = document.getElementById('three-container')
@@ -33,17 +34,6 @@ onMounted(() => {
 
   sceneStore.drawAxes()
 
-  cubes.forEach(cube => {
-    const material = new MeshBasicMaterial({color: generateRandomColor()})
-    const boxGeometry = new BoxGeometry(cube.width, cube.depth, cube.height)
-    const edges = new EdgesGeometry(boxGeometry)
-    const wireframe = new LineSegments(edges, material)
-    wireframe.position.set(cube.center.x, cube.center.y, cube.center.z)
-    wireframe.rotation.set(0, 0, -cube.rotation)
-    wireframe.name = cube.id
-    sceneStore.scene.add(wireframe)
-  });
-
   const controls = new OrbitControls(camera, renderer.domElement)
   controls.update()
 
@@ -55,15 +45,31 @@ onMounted(() => {
     renderer.render(sceneStore.scene.clone(), camera)
   }
 
+
+  const raycaster = new Raycaster()
+  const pointer = new Vector2()
+
+  container.addEventListener('mousedown', onDocumentMouseDown)
+
+  function onDocumentMouseDown(event: any) {
+    event.preventDefault();
+    if (event.which !== 1) {
+      return
+    }
+
+    pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1
+    pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1
+
+    raycaster.setFromCamera( pointer, camera );
+    const intersects = raycaster.intersectObjects( sceneStore.scene.children )
+
+    console.log(intersects)
+  }
+
+
   animate()
 
-  function generateRandomColor(): Color {
-    return new Color(
-      Math.random(),
-      Math.random(),
-      Math.random()
-    )
-  }
+
 
 })
 </script>
