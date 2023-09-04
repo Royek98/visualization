@@ -10,13 +10,12 @@ import {
   Vector3, EdgesGeometry, LineSegments, Raycaster, Vector2
 } from 'three'
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js'
-import cubesJSON from "./validated.json"
 import {useScene} from "@/stores/useScene"
-import type {Cube} from '@/models/Cube'
+//import type {Cube} from '@/models/Cube'
 
 const sceneStore = useScene();
+
 // const cubes: Cube[] = cubesJSON as Cube[]
-//
 // sceneStore.cubeList = cubes
 
 onMounted(() => {
@@ -45,29 +44,25 @@ onMounted(() => {
     renderer.render(sceneStore.scene.clone(), camera)
   }
 
-
-  const raycaster = new Raycaster()
-  const pointer = new Vector2()
-
-  container.addEventListener('mousedown', onDocumentMouseDown)
-
-  function onDocumentMouseDown(event: any) {
-    event.preventDefault();
-    if (event.which !== 1) {
-      return
-    }
-
-    pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1
-    pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1
-
-    raycaster.setFromCamera( pointer, camera );
-    const intersects = raycaster.intersectObjects( sceneStore.scene.children )
-  }
-
+  // const raycaster = new Raycaster()
+  // const pointer = new Vector2()
+  //
+  // container.addEventListener('mousedown', onDocumentMouseDown)
+  //
+  // function onDocumentMouseDown(event: any) {
+  //   event.preventDefault();
+  //   if (event.which !== 1) {
+  //     return
+  //   }
+  //
+  //   pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1
+  //   pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1
+  //
+  //   raycaster.setFromCamera( pointer, camera );
+  //   const intersects = raycaster.intersectObjects( sceneStore.scene.children )
+  // }
 
   animate()
-
-
 
 })
 </script>
