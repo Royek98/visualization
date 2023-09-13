@@ -3,6 +3,11 @@
 ## Overview
 The purpose of this project is a visualization of a JSON file from a parser I created as a part of the "Navisecure" project at my university. A JSON file contains details about the university's buildings.
 
+## Technology Stack
+- Vue - JavaScript framework for building user interfaces.
+- Three.js - JavaScript library used to display 3D graphics in a web browser using WebGL.
+- TypeScript - strongly typed programming language that builds on JavaScript.
+
 Schema of a JSON file: 
 ```json
 [
