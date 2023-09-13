@@ -8,7 +8,7 @@ The purpose of this project is a visualization of a JSON file from a parser I cr
 - Three.js - JavaScript library used to display 3D graphics in a web browser using WebGL.
 - TypeScript - strongly typed programming language that builds on JavaScript.
 
-Schema of a JSON file: 
+## Schema of a JSON file: 
 ```json
 [
     {
@@ -73,8 +73,8 @@ After reading a "validated.json" file. The deafult view type is wireframe.
 ## View after setting focus on an element
 ![Set Focus2](docs/setFocus2.jpg)
 
-## Chceck Collison - drop down list
-![Chceck Collison](docs/checkCollision.jpg)
+## Check Collison
+![Check Collison](docs/checkCollision.jpg)
 
 ## View after checking collision
 Every collsion has an assigned color:
@@ -84,7 +84,7 @@ Every collsion has an assigned color:
 - Equal - Violet
 - Okay - Green
 
-![Chceck Collison2](docs/checkCollision2.jpg)
+![Check Collison2](docs/checkCollision2.jpg)
 
 ## Selecting element from scene
 Selected element from the drop-down list in Scene (Properties toolbar) becomes black.
